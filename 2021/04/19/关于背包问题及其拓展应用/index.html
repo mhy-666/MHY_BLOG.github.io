@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.9k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      26
        分钟
     </span>
   
@@ -281,6 +281,9 @@ cout &lt;&lt; dp[target];
 </code></pre>
 <p>}<br>/*<br>4<br>1 5 5 11<br>*/</p>
 <p>经过了这道题，我想试着总结一下背包问题的应用，或者说是神奇之处：它可以把n个有重量物品中任意x个物品的属性组合在一起，并把所有组合情况都遍历一遍。背包也好，上面这道题也好，所求的其实都是在某种重量约束下这些组合属性的限制条件，比如背包就是x个有重量物品，属性为价值，重量约束为不超过w，限制条件是x个物品的属性最大，dp为最大价值，过程为从0到w的所有最大价值。再比如上面这道题，就是x个有大小（重量）的数（物品），没有属性，重量约束为等于target，dp为真假，过程为从0到target的所有真假。</p>
+<p>——-4.20补充<br>一定要知道自己构造的dp到底代表的什么，比如背包问题，dp[i][j]代表的是对于遍历到第i个物品时，背包所容纳的重量不超过j的情况下装入物品的最大价值，而第二解法的dp[j]则代表背包所容纳的重量不超过i的情况下装入物品的最大价值。再比如417，dp[j]代表的是是否存在和为j的情况。<br>下面这道题，dp[i][j]代表的是有i个1，j个0的情况下，字符串最多的个数。<br>那么现在想想，dp代表的什么其实题目中已经很明确的告诉我们了，甚至还告诉了我们dp应该是几维的，怎么构造，以及vector的size是多少。所以每次编码之前都把这个问题想好答案。<br>/*题目描述<br>给定 m 个数字 0 和 n 个数字 1，以及一些由 0 - 1 构成的字符串，求利用这些数字最多可以构<br>成多少个给定的字符串，字符串只可以构成一次。<br>输入输出样例<br>输入两个整数 m 和 n，表示 0 和 1 的数量，以及一个一维字符串数组，表示待构成的字符串；<br>输出是一个整数，表示最多可以生成的字符串个数。<br>Input : Array = { “10”, “0001”, “111001”, “1”, “0” }, m = 5, n = 3<br>Output : 4<br>在这个样例中，我们可以用 5 个 0 和 3 个 1 构成[“10”, “0001”, “1”, “0”]。<br>*/</p>
+<p>#include <iostream><br>#include<vector><br>#include<cmath><br>#include&lt;math.h&gt;<br>using namespace std;<br>int max(int a, int b);<br>pair&lt;int, int&gt;count(const string&amp; str)<br>{<br>    int count0 = 0, count1 = 0;<br>    for (int i = 0; i &lt; str.size(); i++)<br>    {<br>        if (str[i] == ‘1’)count1++;<br>        if (str[i] == ‘0’)count0++;<br>    }<br>    pair&lt;int, int&gt;x(count0, count1);<br>    return x;<br>    //return make_pair(count0,count1);<br>}</cmath></vector></iostream></p>
+<p>//dp代表的是什么，在有m个1，n个0的情况下，最多的字符串。自己写的<br>/<em>int abc(vector<string>&amp; nums, int m, int n)<br>{<br>    vector&lt;vector<int>&gt;dp(m+1,vector<int>(n+1,0));<br>    for (const string&amp;str: nums)<br>    {<br>        auto [count0, count1] = count(str);<br>        for (int i = m, int j = n; i &gt;=count0&amp;&amp;j&gt;=count1;i–,j– )<br>        {<br>            dp[i][j] = max(dp[i - count0][j - count1] + 1, dp[i][j]);<br>        }<br>    }<br>}</int></int></string></em>/<br>//下面是参考代码<br>int lc474(vector<string>&amp; nums, int m, int n)<br>{<br>    vector&lt;vector<int>&gt;dp(m + 1, vector<int>(n + 1, 0));<br>    int count0, count1;<br>    for (const string&amp; str : nums)<br>    {<br>        pair&lt;int, int&gt; x(count0, count1);<br>        x= count(str);<br>        count0 = x.first;<br>        count1 = x.second;<br>        for (int i = m; i &gt;= count0 ; i–)<br>            for(int j=n;j&gt;=count1;j–)<br>                dp[i][j] = max(dp[i - count0][j - count1] + 1, dp[i][j]);<br>    }<br>    return  dp[m][n];<br>}</int></int></string></p>
 
             </div>
             <hr>
